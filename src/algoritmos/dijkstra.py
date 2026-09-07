@@ -18,6 +18,10 @@ compatível com o `adjacencias` de grafo_ponderado.json.
 import heapq
 import json
 import math
+from pathlib import Path
+
+
+CAMINHO_GRAFO = Path(__file__).resolve().parents[2] / "dados" / "grafo_ponderado.json"
 
 
 # ---------------------------------------------------------------------------
@@ -143,7 +147,7 @@ def _fmt(v):
     return "inf" if v == math.inf else f"{v:.1f}m"
 
 
-def testar_com_grafo_do_mercado(caminho_json="grafo_ponderado.json"):
+def testar_com_grafo_do_mercado(caminho_json=str(CAMINHO_GRAFO)):
     grafo = carregar_grafo(caminho_json)
     print(f"Grafo carregado: {len(grafo)} nós.\n")
 
@@ -221,4 +225,4 @@ def testar_com_grafo_do_mercado(caminho_json="grafo_ponderado.json"):
 
 
 if __name__ == "__main__":
-    testar_com_grafo_do_mercado("grafo_ponderado.json")
+    testar_com_grafo_do_mercado()

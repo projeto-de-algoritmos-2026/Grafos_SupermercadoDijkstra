@@ -19,13 +19,22 @@ vezes com a mesma entrada sempre produz a mesma rota.
 
 import sys
 
-from matriz_distancias import (
-    DESCRICOES_NO,
-    calcular_matriz_distancias,
-    ler_lista_de_compras,
-    selecionar_itens_mercado,
-)
-from dijkstra import carregar_grafo
+try:
+    from .matriz_distancias import (
+        DESCRICOES_NO,
+        calcular_matriz_distancias,
+        ler_lista_de_compras,
+        selecionar_itens_mercado,
+    )
+    from .dijkstra import CAMINHO_GRAFO, carregar_grafo
+except ImportError:
+    from matriz_distancias import (
+        DESCRICOES_NO,
+        calcular_matriz_distancias,
+        ler_lista_de_compras,
+        selecionar_itens_mercado,
+    )
+    from dijkstra import CAMINHO_GRAFO, carregar_grafo
 
 
 # ---------------------------------------------------------------------------
@@ -123,7 +132,7 @@ def imprimir_rota(
 
 
 def _executar_testes_regressao():
-    grafo = carregar_grafo("grafo_ponderado.json")
+    grafo = carregar_grafo(CAMINHO_GRAFO)
 
     listas_de_teste = {
         "Lista 1 - compras variadas": [
@@ -233,7 +242,7 @@ if __name__ == "__main__":
         _executar_testes_regressao()
         sys.exit(0)
 
-    grafo = carregar_grafo("grafo_ponderado.json")
+    grafo = carregar_grafo(CAMINHO_GRAFO)
 
     lista_de_compras = selecionar_itens_mercado()
     if not lista_de_compras:

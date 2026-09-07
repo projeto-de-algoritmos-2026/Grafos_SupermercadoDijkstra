@@ -23,7 +23,10 @@ import math
 import sys
 import unicodedata
 
-from dijkstra import carregar_grafo, dijkstra
+try:
+    from .dijkstra import CAMINHO_GRAFO, carregar_grafo, dijkstra
+except ImportError:
+    from dijkstra import CAMINHO_GRAFO, carregar_grafo, dijkstra
 
 
 # ---------------------------------------------------------------------------
@@ -303,7 +306,7 @@ def selecionar_itens_mercado() -> list[str]:
 def calcular_matriz_distancias(
     itens: list[str],
     grafo: dict | None = None,
-    caminho_json: str = "grafo_ponderado.json",
+    caminho_json: str = str(CAMINHO_GRAFO),
     no_entrada: str = "P01",
     incluir_entrada: bool = True,
 ):
@@ -459,7 +462,7 @@ def _executar_testes_regressao():
     """Suíte de testes fixa (issue #6), usada para validar que a matriz
     continua correta após mudanças no código. Rode com `--teste`."""
     lista_de_compras = ["Leite", "Batata", "Frango", "Sabonete", "Macarrao", "Cerveja"]
-    grafo = carregar_grafo("grafo_ponderado.json")
+    grafo = carregar_grafo(CAMINHO_GRAFO)
 
     matriz, nos_interesse, item_para_no = calcular_matriz_distancias(
         lista_de_compras, grafo=grafo, incluir_entrada=True
@@ -504,7 +507,7 @@ if __name__ == "__main__":
         _executar_testes_regressao()
         sys.exit(0)
 
-    grafo = carregar_grafo("grafo_ponderado.json")
+    grafo = carregar_grafo(CAMINHO_GRAFO)
     lista_de_compras = selecionar_itens_mercado()
 
     if not lista_de_compras:
