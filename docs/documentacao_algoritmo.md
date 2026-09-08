@@ -74,7 +74,7 @@ entrada/saída — ver `docs/tabela_mercado.md`), e o valor é a lista de
 ### Funções principais
 
 #### `carregar_grafo(caminho_json: str) -> dict`
-Lê `dados/grafo_ponderado.json` e devolve o dicionário de adjacência pronto
+Lê `grafo_ponderado.json` e devolve o dicionário de adjacência pronto
 para uso. **Importante**: o grafo do mercado é não-dirigido, mas algumas
 arestas no JSON só estão declaradas em um sentido — esta função
 **simetriza** automaticamente (garante que se existe `A -> B`, também
@@ -120,7 +120,7 @@ Devolve `None` se o destino for inalcançável.
 ### O que faz
 1. Mapeia cada item da lista de compras (texto livre, ex: `"Leite"`) para
    o nó do grafo correspondente (ex: `"C10"`), usando a tabela de
-  produtos por corredor (`docs/tabela_mercado.md`, replicada no dicionário
+   produtos por corredor (`tabela_mercado.md`, replicada no dicionário
    `DESCRICOES_NO`).
 2. Roda `dijkstra()` **uma única vez para cada nó de interesse** (não
    para cada par!) e monta uma matriz k×k com a distância mínima entre
@@ -168,7 +168,7 @@ base para uma tela de seleção de itens em pygame:
 
 #### `DESCRICOES_NO: dict`
 Dicionário `{nó: "descrição, dos, produtos, do, corredor"}`, é a
-representação em código de `docs/tabela_mercado.md`. Útil para rotular os
+representação em código de `tabela_mercado.md`. Útil para rotular os
 corredores no mapa desenhado (ex: escrever "C10 — Adoçantes, Leites..."
 ao lado do nó no pygame).
 
@@ -177,7 +177,7 @@ ao lado do nó no pygame).
 ## 4. `src/algoritmos/nearest_neighbor.py` — Heurística de ordenação da rota
 
 ### O que faz
-Recebe a matriz de distâncias (de `src/algoritmos/matriz_distancias.py`) e decide a
+Recebe a matriz de distâncias (de `matriz_distancias.py`) e decide a
 **ordem** de visita dos itens: partindo do ponto atual, sempre vai ao
 item não visitado mais próximo. É uma aproximação gulosa — **não** é a
 rota ótima (isso seria TSP). Complexidade: `O(k²)` para `k` itens.
@@ -217,10 +217,10 @@ desenhado.
 | Coordenadas (x, y) de cada nó, em metros | `dados/grafo_ponderado.json` → chave `"coordenadas"` (ou dict `coordenadas` em `dados/grafo_ponderado.py`) | Posicionar cada corredor/freezer/geladeira/caixa no mapa desenhado |
 | Dimensões do mercado | `dados/grafo_ponderado.json` → `"metadata"."dimensoes_mercado"` (`"72m x 30m"`) | Definir a escala metros → pixels da tela |
 | Grafo de adjacência | `carregar_grafo("dados/grafo_ponderado.json")` | Desenhar as arestas (corredores conectando os nós) e calcular caminhos |
-| Descrição de produtos por nó | `DESCRICOES_NO` (`src/algoritmos/matriz_distancias.py`) ou `docs/tabela_mercado.md` | Rotular os corredores no mapa e montar uma tela de seleção de itens |
+| Descrição de produtos por nó | `DESCRICOES_NO` (`matriz_distancias.py`) ou `tabela_mercado.md` | Rotular os corredores no mapa e montar uma tela de seleção de itens |
 
 Como as coordenadas já vêm em metros com origem no canto superior
-esquerdo (ver comentário em `dados/grafo_ponderado.py`), a conversão para
+esquerdo (ver comentário em `grafo_ponderado.py`), a conversão para
 pixels é simples:
 ```python
 ESCALA = 10  # pixels por metro, ajustem conforme o tamanho da janela
@@ -293,13 +293,13 @@ Com `caminho_completo`, o grupo de interface pode:
 
 | Função | Arquivo | Uso na interface gráfica |
 |---|---|---|
-| `carregar_grafo()` | `src/algoritmos/dijkstra.py` | Carregar o grafo uma vez no início do programa |
-| `dijkstra()` | `src/algoritmos/dijkstra.py` | Obter distâncias/predecessores a partir de um nó (necessário por perna da rota, ver 5.3) |
-| `reconstruir_caminho()` | `src/algoritmos/dijkstra.py` | Obter a sequência de nós entre dois pontos, para desenhar o trajeto real |
-| `catalogar_itens()` | `src/algoritmos/matriz_distancias.py` | Fonte de dados para uma tela gráfica de seleção de produtos (número, nome, nó) |
-| `DESCRICOES_NO` | `src/algoritmos/matriz_distancias.py` | Rotular corredores/produtos no mapa |
-| `calcular_matriz_distancias()` | `src/algoritmos/matriz_distancias.py` | Obter a matriz de distâncias a partir da lista de itens escolhida na tela |
-| `vizinho_mais_proximo()` | `src/algoritmos/nearest_neighbor.py` | Obter a ordem de visita (rota) e a distância total |
+| `carregar_grafo()` | `dijkstra.py` | Carregar o grafo uma vez no início do programa |
+| `dijkstra()` | `dijkstra.py` | Obter distâncias/predecessores a partir de um nó (necessário por perna da rota, ver 5.3) |
+| `reconstruir_caminho()` | `dijkstra.py` | Obter a sequência de nós entre dois pontos, para desenhar o trajeto real |
+| `catalogar_itens()` | `matriz_distancias.py` | Fonte de dados para uma tela gráfica de seleção de produtos (número, nome, nó) |
+| `DESCRICOES_NO` | `matriz_distancias.py` | Rotular corredores/produtos no mapa |
+| `calcular_matriz_distancias()` | `matriz_distancias.py` | Obter a matriz de distâncias a partir da lista de itens escolhida na tela |
+| `vizinho_mais_proximo()` | `nearest_neighbor.py` | Obter a ordem de visita (rota) e a distância total |
 
 Não é necessário reimplementar nenhuma lógica de cálculo de distância ou
 de ordenação — basta importar essas funções nos módulos do pygame e
@@ -312,8 +312,8 @@ distância) para desenhar e animar.
 
 - O grafo tem **51 nós** e (após simetrização) até **168 arestas**
   bidirecionais, cobrindo corredores, freezers, geladeiras, açougue,
-  hortifruti, caixas e entrada/saída (ver `dados/grafo_ponderado.json` e
-  `docs/tabela_mercado.md` para a legenda completa de cada nó).
+  hortifruti, caixas e entrada/saída (ver `grafo_ponderado.json` e
+  `tabela_mercado.md` para a legenda completa de cada nó).
 - Toda a lógica de cálculo (Dijkstra, matriz de distâncias, heurística)
   já está testada com verificações automáticas (simetria, desigualdade
   triangular, determinismo da heurística, alcançabilidade de todos os

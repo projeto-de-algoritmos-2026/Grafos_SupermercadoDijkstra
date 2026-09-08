@@ -8,7 +8,7 @@
 | Matrícula | Aluno |
 | -- | -- |
 | 241025425 | Vinícius Araújo Oliveira |
-| 221022480 | Carlos Henrique de Paiva Muniz |
+| 221022480 | Carlos Henrique de Paiva Munis |
 
 ## Sobre
 
