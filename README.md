@@ -10,6 +10,9 @@
 | 241025425 | Vinícius Araújo Oliveira |
 | 221022480 | Carlos Henrique de Paiva Munis |
 
+## Link do Vídeo
+(Vídeo)[https://youtu.be/HWQAQ10llq0]
+
 ## Sobre
 
 Este projeto tem como objetivo otimizar a rota de um cliente dentro de um supermercado, reduzindo o deslocamento físico necessário para coletar todos os itens de uma lista de compras. O mercado foi modelado como um grafo ponderado, onde os nós representam seções (açougue, corredores, caixas, etc.) e as arestas representam a distância em metros entre eles
